@@ -2,11 +2,7 @@
 
 PAYLOAD="$1"
 
-echo "Release URL: https://api.github.com/repos/$REPO/releases" >&2
-echo "Release payload: $PAYLOAD" >&2
-      
 resp=$(curl -s -L \
-      --trace-ascii /dev/stderr \
       -X POST \
       -H "Accept: application/vnd.github+json" \
       -H "Authorization: Bearer $TOKEN" \
@@ -14,5 +10,4 @@ resp=$(curl -s -L \
       https://api.github.com/repos/$REPO/releases \
       -d "$PAYLOAD")
 
-echo "Resp: $resp" >&2
 echo $(echo $resp | jq '.id')
