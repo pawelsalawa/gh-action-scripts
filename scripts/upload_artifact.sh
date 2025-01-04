@@ -3,7 +3,7 @@
 RELEASE_ID=$1
 FILE=$2
 
-fname=(basename "$FILE")
+fname=$(basename "$FILE")
 
 curl -s -L \
   -X POST \
@@ -11,5 +11,5 @@ curl -s -L \
   -H "Authorization: Bearer $TOKEN" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   -H "Content-Type: application/octet-stream" \
-  https://uploads.github.com/repos/$REPO/releases/$RELEASE_ID/assets?name=$fname \
+  "https://uploads.github.com/repos/$REPO/releases/$RELEASE_ID/assets?name=$fname" \
   --data-binary "@$FILE"
