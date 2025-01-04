@@ -14,7 +14,7 @@ curl -s -L \
       -H "Authorization: Bearer $TOKEN" \
       -H "X-GitHub-Api-Version: 2022-11-28" \
       https://api.github.com/repos/$REPO/releases \
-      -d $PAYLOAD > $temp_file
+      -d "$PAYLOAD" > $temp_file
 
 echo "Resp: $(cat $temp_file)" >&2
 resp=$(cat $temp_file)
