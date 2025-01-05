@@ -7,20 +7,15 @@ REF=$3
 
 child_dt=$(date -d 'now - 5 seconds' +%Y-%m-%dT%H:%M:%S)
 
-echo "Run Workflow - inputs: $INPUTS" >&2
-echo "Run Workflow - ref: $REF" >&2
-
 PAYLOAD=$(
     jq -c -n \
         --arg inputs "$INPUTS" \
-        --arg ref "$ref" \
+        --arg ref "$REF" \
         '{
             "inputs": $inputs,
             "ref": $ref
         }'
 )
-
-echo "Run Workflow - payload: $PAYLOAD" >&2
 
 curl -s -L \
   -X POST \
