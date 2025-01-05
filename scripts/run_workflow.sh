@@ -9,7 +9,7 @@ child_dt=$(date -d 'now - 5 seconds' +%Y-%m-%dT%H:%M:%S)
 
 PAYLOAD=$(
     jq -c -n \
-        --arg inputs "$INPUTS" \
+        --argjson inputs "$INPUTS" \
         --arg ref "$REF" \
         '{
             "inputs": $inputs,
