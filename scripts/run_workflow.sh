@@ -1,9 +1,21 @@
 #!/bin/bash
 
 WORKFLOW=$1
-PAYLOAD=$2
+#PAYLOAD=$2
+INPUTS=$2
+REF=$3
 
 child_dt=$(date -d 'now - 5 seconds' +%Y-%m-%dT%H:%M:%S)
+
+PAYLOAD=$(
+    jq -c -n \
+        --arg inputs "$INPUTS" \
+        --arg ref "$ref" \
+        '{
+            "inputs": $inputs,
+            "ref": $ref
+        }'
+)
 
 curl -s -L \
   -X POST \
@@ -11,7 +23,7 @@ curl -s -L \
   -H "Authorization: Bearer $TOKEN" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/$REPO/actions/workflows/$WORKFLOW/dispatches \
-  -d $PAYLOAD
+  -d "$PAYLOAD"
 
 sleep 1
 url=https://api.github.com/repos/$REPO/actions/workflows/$WORKFLOW/runs?created=\>$child_dt
