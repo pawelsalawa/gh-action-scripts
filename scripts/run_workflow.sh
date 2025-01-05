@@ -26,11 +26,7 @@ resp=$(curl -s -L \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/$REPO/actions/workflows/$WORKFLOW/dispatches \
   -d "$PAYLOAD")
-if [ $? -ne 0 ]
-then
-    echo "The curl to run workflow has ended with error:\n$resp" >&2
-    exit 1
-fi
+echo "Curl response:\n$resp" >&2
 
 sleep 1
 url=https://api.github.com/repos/$REPO/actions/workflows/$WORKFLOW/runs?created=\>$child_dt
