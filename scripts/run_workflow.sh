@@ -17,6 +17,8 @@ PAYLOAD=$(
         }'
 )
 
+echo "Run Workflow - payload: $PAYLOAD" >&2
+
 curl -s -L \
   -X POST \
   -H "Accept: application/vnd.github+json" \
