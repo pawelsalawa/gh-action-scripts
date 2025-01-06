@@ -26,7 +26,7 @@ resp=$(curl -s -L \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/$REPO/actions/workflows/$WORKFLOW/dispatches \
   -d "$PAYLOAD")
-echo "Curl response:\n$resp" >&2
+#echo "Curl response:\n$resp" >&2
 
 sleep 1
 url=https://api.github.com/repos/$REPO/actions/workflows/$WORKFLOW/runs?created=\>$child_dt
