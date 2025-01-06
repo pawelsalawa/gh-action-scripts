@@ -4,7 +4,7 @@ RELEASE_ID=$1
 BODY=$2
 
 payload=$(
-    js -n -c \
+    jq -n -c \
         --arg body "$BODY" \
         '{"body": $body}'
     )
@@ -14,4 +14,4 @@ curl -s -L \
   -H "Authorization: Bearer $TOKEN" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/$REPO/releases/$RELEASE_ID \
-  -d $payload
+  -d "$payload"
