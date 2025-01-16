@@ -1,8 +1,9 @@
 #!/bin/bash
 
 TAG_NAME="$1"
-RELEASE_NAME="$2"
-RELEASE_DESCRIPTION="$3"
+BRANCH="$2"
+RELEASE_NAME="$3"
+RELEASE_DESCRIPTION="$4"
 
 SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 . $SCRIPT_DIR/common.sh
@@ -12,8 +13,10 @@ payload=$(
         --arg tagName "$TAG_NAME" \
         --arg releaseName "$RELEASE_NAME" \
         --arg body "$RELEASE_DESCRIPTION" \
+        --arg branch "$BRANCH" \
         '{
             "tag_name": $tagName,
+            "target_commitish": $branch,
             "name": $releaseName,
             "body": $body,
             "draft":true
