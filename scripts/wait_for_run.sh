@@ -3,11 +3,8 @@
 RUN_ID=$1
 MINUTES=$2
 
-resp=$(curl -s -L \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/$REPO/actions/runs/$RUN_ID)
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+. $SCRIPT_DIR/common.sh
 
 
 echo "Waiting for ID: $RUN_ID" >&2
@@ -19,11 +16,11 @@ SECS=0
 INTERVAL=15
 while [ "$status" != "completed" ] && [ $SECS -le $TOTAL_SECS ] && [ $finished -eq 0 ]
 do
-    printf "Iteration for $RUN_ID: %02d:%02d / %02d:%02d\n" $((SECS / 60)) $((SECS % 60)) $((TOTAL_SECS / 60)) $((TOTAL_SECS % 60)) >&2
+    debug $(printf "Iteration for $RUN_ID: %02d:%02d / %02d:%02d\n" $((SECS / 60)) $((SECS % 60)) $((TOTAL_SECS / 60)) $((TOTAL_SECS % 60)))
     SECS=$((SECS + INTERVAL))
     
     url=https://api.github.com/repos/$REPO/actions/runs/$RUN_ID
-    echo "Querying status: $url" >&2
+    debug "Querying status: $url"
     resp=$(
             curl -s -L \
               -H "Accept: application/vnd.github+json" \
@@ -31,6 +28,7 @@ do
               -H "X-GitHub-Api-Version: 2022-11-28" \
               $url
         )
+    debug "Response:\n$resp"
     status=$(echo $resp | jq -r '.status')
     result=$(echo $resp | jq -r '.conclusion')
     echo "Status: $status, Result: $result" >&2

@@ -2,6 +2,9 @@
 
 RELEASE_ID=$1
 
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+. $SCRIPT_DIR/common.sh
+
 payload="{\"draft\":false}"
 curl -s -L \
   -X PATCH \

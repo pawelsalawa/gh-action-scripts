@@ -3,6 +3,9 @@
 RUN_ID=$1
 FILTER="$2"
 
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+. $SCRIPT_DIR/common.sh
+
 resp=$(curl -s -L \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: Bearer $TOKEN" \

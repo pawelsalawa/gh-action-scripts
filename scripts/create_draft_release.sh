@@ -4,6 +4,9 @@ TAG_NAME="$1"
 RELEASE_NAME="$2"
 RELEASE_DESCRIPTION="$3"
 
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+. $SCRIPT_DIR/common.sh
+
 payload="{\"tag_name\":\"$TAG_NAME\",\"name\":\"$RELEASE_NAME\",\"body\":\"$RELEASE_DESCRIPTION\",\"draft\":true}"
 resp=$(curl -s -L \
       -X POST \

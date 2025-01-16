@@ -5,6 +5,9 @@ WORKFLOW=$1
 INPUTS=$2
 REF=$3
 
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+. $SCRIPT_DIR/common.sh
+
 child_dt=$(date -d 'now - 5 seconds' +%Y-%m-%dT%H:%M:%S)
 
 PAYLOAD=$(
@@ -17,7 +20,7 @@ PAYLOAD=$(
         }'
 )
 
-echo "Run Workflow - payload: $PAYLOAD" >&2
+debug "Run Workflow - payload:\n$PAYLOAD"
 
 resp=$(curl -s -L \
   -X POST \
@@ -26,7 +29,7 @@ resp=$(curl -s -L \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/$REPO/actions/workflows/$WORKFLOW/dispatches \
   -d "$PAYLOAD")
-#echo "Curl response:\n$resp" >&2
+debug "Curl response:\n$resp"
 
 sleep 1
 url=https://api.github.com/repos/$REPO/actions/workflows/$WORKFLOW/runs?created=\>$child_dt
@@ -42,6 +45,7 @@ do
               -H "X-GitHub-Api-Version: 2022-11-28" \
               $url
           )
+    debug "Response:\n$resp"
     run_id=$(echo $resp | jq '.workflow_runs[0].id')
     it=$((it + 1))
     sleep 1
