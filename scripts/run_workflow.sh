@@ -20,6 +20,7 @@ PAYLOAD=$(
         }'
 )
 
+debug "Run Workflow - name: \"$WORKFLOW\""
 debug "Run Workflow - payload:\n$PAYLOAD"
 
 resp=$(curl -s -L \
